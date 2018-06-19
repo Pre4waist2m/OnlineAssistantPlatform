@@ -1,0 +1,27 @@
+.loca_1{
+    display:-webkit-box;
+    -webkit-box-orient: vertical;
+}
+.loca_2{
+    height:40px;
+    width:1520px;
+}
+
+.loca_3{
+    width:1520px;
+    display:-webkit-box;
+    -webkit-box-orient: horizontal;
+    height:780px;
+}
+.loca_3_1 {
+    width: 300px;
+    /*
+    background: #007fff;
+    */
+    height:780px;
+}
+.loca_3_2{
+    width: 1220px;
+    background: #f9f9f9;
+    height:780px;
+}

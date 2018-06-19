@@ -1,0 +1,33 @@
+.nav_1 {
+    height: 40px;
+    width: 1520px;
+    background-color: #010d4c;
+}
+
+.nav_word {
+    position: relative;
+    left: 50px;
+    top: 5px;
+    font-size: 20px;
+    color: #f9f9f9;
+}
+.nav_word2 {
+    position: relative;
+    left: 250px;
+    top: 5px;
+    font-size: 20px;
+    color: #f9f9f9;
+}
+.nav_word3{
+    position: relative;
+    left: 1000px;
+    top: 5px;
+    font-size: 15px;
+    color: #f9f9f9;
+}
+a:hover{
+    background-color: #007fff;
+}
+a:checked{
+    background: #8fd3f4;
+}
