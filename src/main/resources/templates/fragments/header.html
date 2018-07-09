@@ -7,10 +7,7 @@
         <meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <title id="title" sec:authentication="name"></title>
-        <link rel="stylesheet" th:href="@{css/bootstrap/bootstrap4/bootstrap.min.css}">
-        <script type="text/javascript" th:src="@{js/jquery-3.3.1.min.js}"></script>
         <link rel="stylesheet" th:href="@{css/design.css}">
-        <script type="text/javascript" th:src="@{js/talk.js}"></script>
         <link rel="stylesheet" th:href="@{css/header.css}">
         <link rel="stylesheet" th:href="@{css/talk_des.css}">
     </div>
@@ -18,10 +15,33 @@
 <body>
 <div th:fragment="header">
     <nav class="nav_1 nav nav-tabs">
-        <li class="nav_word">Field</li>
-        <li class="nav_word2"><a>Resource</a></li>
-        <li class="nav_word3" id="ask" style="cursor: pointer;"><a>提问</a></li>
+        <!--传递用户的id隐藏-->
+        <li class="nav_word"><a style="color: #ffffff;" href="/">Field</a></li>
+       <!-- <li class="nav_word2" style="cursor: pointer;"><a href="/resource">Resource</a></li>
+        <li class="nav_word3" id="ask" style="cursor: pointer;"><a style="color: #ffffff;" href="/ask">提问</a></li>-->
+        <li class="nav_word4" id="myown" style="cursor: pointer;">
+            <ul th:class="dropdown" style="color: #ffffff;"><span  id="dropdown"><strong><span  sec:authentication="name"></span></strong>个人中心<span class="caret"></span></span>
+                  <li style="background:#ffffff">
+                      <a href="/">个人中心</a>
+                  </li>
+                  <li style="background:#ffffff">
+                      <form th:action="@{/logout}" method="post">
+                          <input th:class="Border_close" type="submit" th:value="退出登录"></input>
+                      </form>
+                  </li>
+            </ul>
+        </li>
     </nav>
+
 </div>
+<script th:inline="javascript">
+  /*  $(function () {
+        $("#dropdown").hover(function () {
+            $(this).find("blockquote").slideDown('fast');//滑动显示下拉菜单
+        },function () {
+            $(this).find("blockquote").slideUp('fast');//隐藏
+        });
+    })*/
+</script>
 </body>
 </html>

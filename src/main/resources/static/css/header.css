@@ -1,8 +1,7 @@
 .nav_1 {
     height: 40px;
     width: 1520px;
-    background-color: #010d4c;
-}
+    background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);}
 
 .nav_word {
     position: relative;
@@ -30,4 +29,28 @@ a:hover{
 }
 a:checked{
     background: #8fd3f4;
+}
+
+.nav_word4{
+    position: relative;
+    left:1250px;
+    top: 15px;
+    font-size: 15px;
+    color: #f9f9f9;
+}
+.dropdown{
+
+}
+.dropdown:hover li{
+    display: block;
+}
+.dropdown li{
+    display: none;
+}
+.Border_close:hover{
+    border: none;
+    background-color: #007fff;
+}
+.Border_close{
+   background-color:#e4b9b9;
 }

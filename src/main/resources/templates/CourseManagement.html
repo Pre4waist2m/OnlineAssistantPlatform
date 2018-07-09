@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <div th:replace="fragments/header :: resources"></div>
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{css/courseManagement.css}">
+    <link rel="stylesheet" th:href="@{js/uploadify/uploadify.css}">
+    <script type="text/javascript" th:src="@{js/uploadify/jquery.uploadify.js}"></script>
+</head>
+<body>
+
+<div class="loca_1">
+    <div class="loca_2">
+        <div th:replace="fragments/header :: header"></div>
+    </div>
+    <div class="loca_3">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <h3 id="classInfomation" th:text="${courseName}"></h3>
+                    <div class="tabbable" id="tabs-774988">
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a href="#panel-654002" data-toggle="tab">资源问题列表:</a>
+                            </li>
+                            <li class="active">
+                                <a href="#panel-242213" data-toggle="tab">学生信息:</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane" id="panel-654002">
+                                <!--  <p>
+                                      I'm in Section 1.
+                                  </p>-->
+                                <div class="page-header">
+                                    <h1>
+                                        <small>课堂资源列表:</small><strong><a id="modal-188246" href="#modal-container-188246" role="button" class="btn" data-toggle="modal">点我上传资源</a></strong>
+                                    </h1>
+                                </div>
+                                <div class="modal fade" id="modal-container-188246" role="dialog" aria-labelledby="myModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel">
+                                                    选择你要上传的文件:
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="file" th:name="${_csrf.parameterName}"
+                                                       th:value="${_csrf.token}" id="uploadify">
+                                            </div>
+                                            <div class="modal-footer" id="fileQueue">
+                                                <!--  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+                                                <!--
+                                                                                        <button type="button" class="btn btn-primary" id="uploadResource">上传</button>
+                                                -->
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            编号
+                                        </th>
+                                        <th>
+                                            名称(点击可下载)
+                                        </th>
+                                        <th>
+                                            上传者
+                                        </th>
+                                        <th sec:authorize="hasRole('ROLE_teacher')">
+                                            管理资源
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="temp:${resourceList}">
+                                        <td th:text="${temp.getResourceId()}">
+                                        </td>
+                                        <td>
+                                            <a class="downloadResource" th:value="${temp.getServerName()}" th:id="${temp.getResourceId()}"
+                                               th:text="${temp.getResourceName()}"></a>
+                                        </td>
+                                        <td th:text="${temp.getResourceOwner()}">
+                                        </td>
+                                        <td sec:authorize="hasRole('ROLE_teacher')">
+                                            <a th:id="${temp.getResourceId()}" th:value="${temp.getServerName()}" class="deleteResource">删除资源</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="page-header">
+                                    <h1>
+                                        <small>课堂问题列表:</small><a id="modal-425057" href="#modal-container-515162" role="button" class="btn" data-toggle="modal">点我提问</a>
+                                    </h1>
+                                </div>
+
+                                <div class="modal fade" id="modal-container-515162" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title" id="myModalLabel">
+                                                    <strong>点击输入你的问题:</strong>
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-horizontal" role="form">
+                                                    <div class="form-group">
+                                                        <label for="keyWord" class="col-sm-2 control-label">问题关键字:</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="keyWord" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="questionDescribe" class="col-sm-2 control-label">问题具体描述:</label>
+                                                        <div class="col-sm-10">
+                                                            <textarea  class="form-control textArea"  id="questionDescribe"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" id="sendQuestion">发送</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            编号
+                                        </th>
+                                        <th>
+                                            问题名称
+                                        </th>
+                                        <th>
+                                            提问者
+                                        </th>
+                                        <th>
+                                            查看该问题
+                                        </th>
+                                        <th sec:authorize="hasRole('ROLE_teacher')">
+                                            管理问题
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="temp:${questionList}">
+                                        <td th:text="${temp.getQuestionid()}">
+                                        </td>
+                                        <td th:text="${temp.getQuestionkeyword()}">
+                                        </td>
+                                        <td th:text="${temp.getOwn()}">
+                                        </td>
+                                        <td>
+                                            <a th:id="${temp.getQuestionid()}" th:class="seeTheQuestion" >查看</a>
+                                        </td>
+                                        <td sec:authorize="hasRole('ROLE_teacher')">
+                                            <a th:id="${temp.getQuestionid()}" class="deleteQuestion">删除问题</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane active" id="panel-242213">
+                                <div class="page-header">
+                                    <h1>
+                                        <small>课堂所有学生:</small>
+                                    </h1>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            编号
+                                        </th>
+                                        <th>
+                                            姓名
+                                        </th>
+                                        <th sec:authorize="hasRole('ROLE_teacher')">
+                                            管理学生
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="student:${studentsInfo}">
+                                        <td th:text="${student.getId()}">
+                                        </td>
+                                        <td th:text="${student.getUsername()}">
+                                        </td>
+                                        <td sec:authorize="hasRole('ROLE_teacher')">
+                                            <a th:id="${student.getId()}" th:class="deleteStudents">删除该学生</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    console.log("courseManagement"+[[${userId}]]);
+    var courseId=[[${courseId}]];
+    console.log("进入的课程id为"+[[${courseId}]]);
+
+        $("#classInfomation").val([[courseName]] + "的信息:");
+        $(".deleteQuestion").click(function () {
+            var questionId = $(this).attr("id");
+            console.log("deleteQuestion我要删除的问题的id是:" + questionId);
+            $.ajax({
+                url: "/deleteQuestion",
+                type: "post",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/x-www-form-urlencoded;',
+                dataType: "text",
+                data: {
+                    "questionId": questionId
+                },
+                success: function (e) {
+                    alert("问题删除成功");
+                    location.reload(true);
+                    /*
+                     document.write(e);
+                     */
+                }
+            })
+        });
+
+        $(".deleteResource").click(function () {
+            var resourceId = $(this).attr("id");
+            var serverName=$(this).attr("value");
+            console.log("我要删除的问题的id是:" + resourceId);
+            $.ajax({
+                url: "/deleteResource",
+                type: "post",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/x-www-form-urlencoded;',
+                dataType: "text",
+                data: {
+                    "resourceId": resourceId,
+                    "serverName":serverName
+                },
+                success: function (e) {
+                    alert("资源删除成功");
+                    location.reload(true);
+                    /*
+                     document.write(e);
+                     */
+                }
+            })
+        });
+
+        $(".deleteStudents").click(function () {
+            var studentId=$(this).attr("id");
+            console.log("删除:"+studentId);
+            $.ajax({
+                url: "/deleteStudent",
+                type: "post",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/x-www-form-urlencoded;',
+                dataType: "text",
+                data: {
+                    "studentId": studentId
+                },
+                success: function (e) {
+                    alert("删除成功");
+                    location.reload(true);
+                    /*
+                     document.write(e);
+                     */
+                }
+            })
+        });
+
+    var name=$("#title").text();
+    console.log(name);
+
+    $("#uploadify").uploadify({
+        'swf': "/js/uploadify/uploadify.swf",
+        'uploader': '/myservlet',
+        'queueID': 'fileQueue',
+        'fileSizeLimit': '50MB',
+        'buttonText': 'select',
+        'simUploadLimit': 1,
+        'method':'get',
+        'queueSizeLimit': 1,
+        'formData': {"owner": name,"courseId":courseId},
+        'auto': true,
+        'fileExt': '*.jpg;*.gif;*.jpeg;*.png;*.pdf，*.pptx',
+        onComplete: function (event, queueID, fileObj, response, data) {
+            //转换为json对象
+            /* var dataObj = eval("("+response+")");
+             saveFile(dataObj);*/
+            console.log("asd");
+            location.reload(true);
+        },
+        onSelect: function () {
+        },
+        onError: function (event, queueID, fileObj) {
+            alert("文件:" + fileObj.name + "上传失败");
+        }
+    });
+
+
+    //下载资源
+    $(".downloadResource").click(function () {
+        var url="/downloadFile";
+        var fileName=$(this).attr('value');
+        var form = $("<form></form>").attr("action", url).attr("method", "post");
+        form.append($("<input></input>").attr("type", "hidden").attr("name", "fileName").attr("value", fileName));
+        form.appendTo('body').submit().remove();
+    });
+
+
+
+    //提问
+    $("#sendQuestion").click(function (e) {
+        e.preventDefault();
+        var key_word=$("#keyWord").val();
+        var question=$("#questionDescribe").val();
+        $("#keyWord").val("");
+        $("#questionDescribe").val("");
+        $.ajax({
+            type:"POST",
+            url:"/saveQuestion",
+            cache:"false",
+            beforeSend:function (xhr) {
+                xhr.setRequestHeader(header,token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType:"text",
+            data:{
+                "own":name,
+                "question_keyword":key_word,
+                "question":question,
+                "courseId":courseId
+            },
+            success:function () {
+                location.reload(true);
+              /*  $("#Que_list").append("<div class='nav-item'><a id='"+e+"' class='nav-link'  th:classappend='${title} == '"+key_word+"' ? 'active' : '''>"+key_word+"</a></div>");
+                $("#Que_list").scrollTop($("#Que_list")[0].scrollHeight);*/
+            }
+        })
+    });
+
+    $(".seeTheQuestion").click(function () {
+        var discuss_question=$(this).attr("id");
+        $.ajax({
+            url:"/allMessageNew",
+            type: "POST",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "question_id": discuss_question,
+                "courseId":courseId
+            },
+            success:function (e) {
+                document.close();
+                document.write(e);
+            }
+        })
+    })
+</script>
+</body>
+</html>

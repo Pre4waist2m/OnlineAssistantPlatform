@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="fragments/header :: resources"></div>
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script th:inline="javascript" th:src="@{js/setClass.js}"></script>
+    <link rel="stylesheet" th:href="@{css/setClass.css}">
+</head>
+<body sec:authorize="hasRole('ROLE_teacher')">
+<div class="loca_1">
+    <div class="loca_2">
+        <div th:replace="fragments/header :: header"></div>
+    </div>
+    <div class="loca_3">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="tabbable" id="tabs-311568">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-822105" data-toggle="tab">学习申请信息:</a>
+                            </li>
+                            <li>
+                                <a href="#panel-522098" data-toggle="tab">课堂信息:</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-822105">
+                                <div class="row clearfix">
+                                    <div class="col-md-12 column">
+                                        <table class="table table-hover table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    编号
+                                                </th>
+                                                <th>
+                                                    学生id
+                                                </th>
+                                                <th>
+                                                    个人信息
+                                                </th>
+                                                <th>
+                                                    申请加入的课堂
+                                                </th>
+                                                <th>
+                                                    接受
+                                                </th>
+                                                <th>
+                                                    拒绝
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="temp:${applyInfo}">
+                                                <td th:text="${temp.getId()}">
+                                                </td>
+                                                <td th:text="${temp.getStudentId()}">
+                                                </td>
+                                                <td th:text="${temp.getApplyInfo()}">
+                                                </td>
+                                                <td th:text="${temp.getCourseId()}">
+                                                </td>
+                                                <td>
+                                                    <a th:id="${temp.getId()}"th:name="${temp.getCourseId()}"
+                                                        th:value="${temp.getStudentId()}" class="accept">接受</a>
+                                                </td>
+                                                <td>
+                                                    <a th:id="${temp.getId()}" class="deny">拒绝</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="panel-522098">
+                                <div class="col-md-12 column">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12 column">
+                                            <!-- <div class="alert alert-dismissable alert-info">
+                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                 <h4>
+                                                     注意!
+                                                 </h4> <strong>Warning!</strong> Best check yo self, you're not looking too good. <a href="#" class="alert-link">alert link</a>
+                                             </div>-->
+
+                                            <a id="modal-515162" href="#modal-container-515162" role="button"
+                                               class="btn"
+                                               data-toggle="modal">创建课堂:</a>
+                                            <div class="modal fade" id="modal-container-515162" role="dialog"
+                                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">
+                                                                ×
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">
+                                                                <strong>创建课堂:</strong>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form class="form-horizontal" role="form">
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3"
+                                                                           class="col-sm-2 control-label">课堂名称:</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control"
+                                                                               id="inputEmail3"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputPassword3"
+                                                                           class="col-sm-2 control-label">课堂编号:</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control"
+                                                                               id="inputPassword3"/>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">取消
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    id="ClassSave">保存
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <blockquote>
+                                        <p>
+                                            我管理的课堂:
+                                        </p> <!--<small>Someone famous <cite>Source Title</cite></small>-->
+                                    </blockquote>
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                编号
+                                            </th>
+                                            <th>
+                                                课程名称:
+                                            </th>
+                                            <th>
+                                                课程编号:
+                                            </th>
+                                            <th>
+                                                其他
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="cl:${classList}">
+                                            <td th:text="${cl.getId()}"></td>
+                                            <td th:text="${cl.getClassName()}"></td>
+                                            <td th:text="${cl.getClassId()}"></td>
+                                            <td><a th:id="${cl.getId()}" class="delete">管理该课堂</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+                <div class="container">
+                    <div class="row clearfix">
+                        <div class="tabbable" id="tabs-774988">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#panel-242214" data-toggle="tab">学习申请信息:</a>
+                                </li>
+                                <li class="active">
+                                    <a href="#panel-242213" data-toggle="tab">课堂信息:</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="panel-242214">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12 column">
+                                            <table class="table table-hover table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        编号
+                                                    </th>
+                                                    <th>
+                                                        学生id
+                                                    </th>
+                                                    <th>
+                                                        个人信息
+                                                    </th>
+                                                    <th>
+                                                        接受
+                                                    </th>
+                                                    <th>
+                                                        拒绝
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="temp:${applyInfo}">
+                                                    <td th:text="${temp.getId()}">
+                                                    </td>
+                                                    <td th:text="${temp.getStudentId()}">
+                                                    </td>
+                                                    <td th:text="${temp.getApplyInfo()}">
+                                                    </td>
+                                                    <td>
+                                                        <a class="accept">接受</a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="deny">拒绝</a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="panel-242213">
+                                    <div class="col-md-12 column">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12 column">
+                                                &lt;!&ndash; <div class="alert alert-dismissable alert-info">
+                                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                     <h4>
+                                                         注意!
+                                                     </h4> <strong>Warning!</strong> Best check yo self, you're not looking too good. <a href="#" class="alert-link">alert link</a>
+                                                 </div>&ndash;&gt;
+
+                                                <a id="modal-515162" href="#modal-container-515162" role="button" class="btn"
+                                                   data-toggle="modal">创建课堂:</a>
+                                                <div class="modal fade" id="modal-container-515162" role="dialog"
+                                                     aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-hidden="true">
+                                                                    ×
+                                                                </button>
+                                                                <h4 class="modal-title" id="myModalLabel">
+                                                                    <strong>创建课堂:</strong>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form class="form-horizontal" role="form">
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3"
+                                                                               class="col-sm-2 control-label">课堂名称:</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="text" class="form-control" id="inputEmail3"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3"
+                                                                               class="col-sm-2 control-label">课堂编号:</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="text" class="form-control"
+                                                                                   id="inputPassword3"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary" id="ClassSave">保存</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <blockquote>
+                                            <p>
+                                                我管理的课堂:
+                                            </p> &lt;!&ndash;<small>Someone famous <cite>Source Title</cite></small>&ndash;&gt;
+                                        </blockquote>
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    编号
+                                                </th>
+                                                <th>
+                                                    课程名称:
+                                                </th>
+                                                <th>
+                                                    课程编号:
+                                                </th>
+                                                <th>
+                                                    其他
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="cl:${classList}">
+                                                <td th:text="${cl.getId()}"></td>
+                                                <td th:text="${cl.getClassName()}"></td>
+                                                <td th:text="${cl.getClassId()}"></td>
+                                                <td><a th:id="${cl.getId()}" class="delete">管理该课堂</a></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        -->
+    </div>
+</div>
+<script th:inline="javascript">
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    $(".delete").click(function () {
+        var temp = $(this).attr("id");
+        var userId = [[${userId}]];
+        console.log("用户点击的的课程id是:" + temp);
+        $.ajax({
+            url: "/setclass/courseManagement",
+            type: "post",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "courseId": temp,
+                "userId": userId
+            },
+            success: function (e) {
+                document.write(e);
+                document.close();
+            }
+        })
+    });
+
+    $(".accept").click(function () {
+        var Id = $(this).attr("id");
+        var studentId=$(this).attr("value");
+        var courseId=$(this).attr("name");
+        console.log(studentId+"  "+courseId);
+        $.ajax({
+            url: "/addStudents",
+            type: "post",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "Id": Id,
+                "studentId":studentId,
+                "courseId":courseId
+            },
+            success: function (e) {
+                location.reload(true);
+                alert("添加学生成功");
+            }
+        })
+    });
+    $(".deny").click(function () {
+        var Id = $(this).attr("id");
+        $.ajax({
+            url: "/denyStudents",
+            type: "post",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "Id": Id
+            },
+            success: function (e) {
+                location.reload(true);
+            }
+        })
+    });
+</script>
+</body>
+</html>

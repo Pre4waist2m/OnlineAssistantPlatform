@@ -5,31 +5,39 @@ package com.example.demo.webSocket;
  */
 
 public class ContentVo {
-    String to;
-    String msg;
-    int type;
+    private String own;
+    private String msg;
+    private String time;
 
-    public void setTo(String to) {
-        this.to = to;
+    public String getOwn() {
+        return own;
+    }
+
+    public void setOwn(String own) {
+        this.own = own;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setTo(String own) {
+        this.own = own;
     }
 
     public void setMsg(String msg) {
         this.msg = msg;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public String getTo() {
-        return to;
+        return own;
     }
 
     public String getMsg() {
         return msg;
-    }
-
-    public int getType() {
-        return type;
     }
 }

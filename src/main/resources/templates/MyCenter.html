@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="fragments/header :: resources"></div>
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{css/mycenter.css}">
+</head>
+<body>
+
+<div class="loca_1">
+    <div class="loca_2">
+        <div th:replace="fragments/header :: header"></div>
+    </div>
+    <div class="loca_3">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4>
+                            注意!
+                        </h4> 发送申请后需等待该课程的老师同意:<!--<a href="#" class="alert-link">alert link</a>-->
+                    </div>
+                    <a id="modal-425057" href="#modal-container-515162" role="button" class="btn" data-toggle="modal">发送申请</a>
+
+                    <div class="modal fade" id="modal-container-515162" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        <strong>申请加入课堂:</strong>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label for="classId" class="col-sm-2 control-label">课堂ID:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="classId"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="identificationInfo" class="col-sm-2 control-label">个人信息:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="identificationInfo"/>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" id="sendRequest">发送</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            课堂编号
+                        </th>
+                        <th>
+                            课堂名称
+                        </th>
+                        <th>
+                            进入课堂
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="temp:${myclass}">
+                        <td th:text="${temp.getId()}">
+                        </td>
+                        <td th:text="${temp.getClassName()}">
+                        </td>
+                        <td>
+                            <a th:id="${temp.getId()}" th:class="enterClass">进入该课堂</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script th:inline="javascript">
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    $(".enterClass").click(function () {
+        var temp = $(this).attr("id");
+        var userId = [[${userId}]];
+        $.ajax({
+            url: "/setclass/courseManagement",
+            type: "post",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "courseId": temp,
+                "userId": userId
+            },
+            success: function (e) {
+                document.write(e);
+            }
+        })
+    });
+
+    $("#sendRequest").click(function () {
+        var classId = $("#classId").val();
+        $("#classId").val("");
+        var appluInfo = $("#identificationInfo").val();
+        $("#identificationInfo").val("");
+        $.ajax({
+            url: "/applyForClass",
+            type: "post",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "userId": [[${userId}]],
+                "classId": classId,
+                "appluInfo": appluInfo
+            },
+            success: function () {
+                location.reload(true);
+                alert("申请已发送");
+            }
+        });
+    })
+</script>
+</body>
+</html>
