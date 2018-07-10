@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<nav th:fragment="silder" class="d-sm-block bg-light sidebar">
-    <ul class="list-group nav nav-pills flex-column" id="Que_list">
-        <!--<li class="nav-item">
-            <a class="nav-link"
-               th:href="@{/test}"
-               th:classappend="${title} == '轨迹重现列表版' ? 'active' : ''">错误数据</a>
-        </li>-->
-    </ul>
-</nav>
+<div th:fragment="silder" class="d-sm-block bg-light sidebar"  >
+    <div class="scro All_height"  id="Que_list">
+        <tr>
+            <div class="title">问题列表:</div>
+        </tr>
+        <tr th:each="que:${questionList}" id="questionForm">
+            <a th:id="${que.getQuestionid()}"  th:text="${que.getQuestionkeyword()}" class="nav-item active nav-link question" > </a>
+        </tr>
+    </div>
+</div>
 </body>
 </html>
