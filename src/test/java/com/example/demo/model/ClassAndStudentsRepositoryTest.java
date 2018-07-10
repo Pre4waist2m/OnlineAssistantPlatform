@@ -25,7 +25,7 @@ public class ClassAndStudentsRepositoryTest {
 
     @Test
     public void deleteByStutentsId() throws Exception {
-        classAndStudentsRepository.deleteByStutentsId("15130140362");
+ //       classAndStudentsRepository.deleteByStutentsId("15130140362");
     }
 
 

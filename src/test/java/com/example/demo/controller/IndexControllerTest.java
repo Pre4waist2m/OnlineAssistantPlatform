@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.FieldApplication;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class IndexControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/signup").accept(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
 
     @Test
     public void welcomeTest() throws Exception {

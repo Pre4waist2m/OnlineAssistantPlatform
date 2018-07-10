@@ -1,4 +1,4 @@
-package com.example.demo.contoller;
+package com.example.demo.controller;
 
 import com.example.demo.model.*;
 import com.example.demo.servletUploadify.resourceListRepository;

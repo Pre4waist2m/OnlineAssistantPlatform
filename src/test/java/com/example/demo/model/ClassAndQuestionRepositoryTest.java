@@ -23,7 +23,7 @@ public class ClassAndQuestionRepositoryTest {
     @Autowired ClassAndQuestionRepository classAndQuestionRepository;
     @Test
     public void deleteByQuestionId() throws Exception {
-        classAndQuestionRepository.deleteByQuestionId(String.valueOf(5195));
+   //     classAndQuestionRepository.deleteByQuestionId(String.valueOf(5195));
     }
 
 
