@@ -1,19 +1,18 @@
-package com.example.demo.controller;
+package com.example.demo.contoller;
 
 import com.example.demo.model.*;
 import com.example.demo.servletUploadify.resourceListRepository;
 import com.example.demo.validation.UserRepository;
-import com.example.demo.websecurity.SysRole;
-import com.example.demo.websecurity.SysRoleRepository;
-import com.example.demo.websecurity.SysUser;
-import com.example.demo.websecurity.SysUserRepository;
+import com.example.demo.springsecurity.SysRole;
+import com.example.demo.springsecurity.SysRoleRepository;
+import com.example.demo.springsecurity.SysUser;
+import com.example.demo.springsecurity.SysUserRepository;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.validation.email_verfication;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import javax.mail.MessagingException;
 import java.io.File;
 import java.util.*;
@@ -25,7 +24,7 @@ import java.util.*;
 public class SearchController {
 
     @Autowired
-    applyCourseRepository applyCourseRepository;
+    ApplyCourseRepository ApplyCourseRepository;
 
     @Autowired
     ClassAndStudentsRepository classAndStudentsRepository;
@@ -229,7 +228,7 @@ public class SearchController {
     @PostMapping("/addStudents")
     public String addStudents(@RequestParam("Id")String Id,@RequestParam("studentId")String studentId,
                               @RequestParam("courseId")String classId){
-        applyCourseRepository.UUpdateStatus(Integer.parseInt(Id));
+        ApplyCourseRepository.UUpdateStatus(Integer.parseInt(Id));
         System.out.println(classId+ "   asd "+studentId);
         ClassAndStutents classAndStutents=new ClassAndStutents();
         classAndStutents.setClassId(classId);
@@ -240,7 +239,7 @@ public class SearchController {
     }
     @PostMapping("/denyStudents")
     public String denyStudents(@RequestParam("Id")String Id){
-        applyCourseRepository.UUpdateStatus(Integer.parseInt(Id));
+        ApplyCourseRepository.UUpdateStatus(Integer.parseInt(Id));
         return "ok";
     }
 
@@ -253,7 +252,7 @@ public class SearchController {
         applyCourse.setCourseId(classId);
         applyCourse.setApplyInfo(appluInfo);
         applyCourse.setStatus(0);
-        applyCourseRepository.save(applyCourse);
+        ApplyCourseRepository.save(applyCourse);
         return "ok";
     }
 

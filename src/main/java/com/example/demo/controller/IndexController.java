@@ -1,11 +1,11 @@
-package com.example.demo.controller;
+package com.example.demo.contoller;
 
 import com.example.demo.model.*;
 import com.example.demo.servletUploadify.ResourceList;
 import com.example.demo.servletUploadify.resourceListRepository;
-import com.example.demo.websecurity.SysUser;
-import com.example.demo.websecurity.SysUserRepository;
-import com.example.demo.websecurity.studentManagementInfo;
+import com.example.demo.springsecurity.SysUser;
+import com.example.demo.springsecurity.SysUserRepository;
+import com.example.demo.springsecurity.studentManagementInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +30,7 @@ import java.util.*;
 public class IndexController {
 
     @Autowired
-    applyCourseRepository applyCourseRepository;
+    ApplyCourseRepository applyCourseRepository;
 
     @Autowired
     SysUserRepository sysUserRepository;
@@ -73,7 +73,7 @@ public class IndexController {
         List<classInfo> lists = saveClassInfo.findByTeacherId(userId);
         model.addAttribute("userId", userId);
         model.addAttribute("classList", lists);
-        List<applyCourse> applyCourseslist=applyCourseRepository.findByStatus(userId);
+        List<applyCourse> applyCourseslist= applyCourseRepository.findByStatus(userId);
         model.addAttribute("applyInfo",applyCourseslist);
         return "/SetClass";
     }
