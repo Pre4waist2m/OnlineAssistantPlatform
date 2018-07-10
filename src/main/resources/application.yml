@@ -18,6 +18,10 @@ spring:
       max-file-size: 50Mb
   http:
     multipart:
+<<<<<<< HEAD
       max-request-size: 100Mb
 server:
   port: 8080
+=======
+      max-request-size: 100Mb
+>>>>>>> 8474578df8bce3bcdcc724860ac56c1876a0f729

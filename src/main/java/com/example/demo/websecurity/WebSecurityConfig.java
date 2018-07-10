@@ -32,12 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/talk/*", "/signup", "/rollback", "/talk", "/loginservlet", "/chatSocket/*").permitAll()
+        http.csrf().ignoringAntMatchers("/myservlet","/downloadFile");
+        http.authorizeRequests().antMatchers("/myservlet","/myservlet/*","/talk/*", "/signup", "/rollback", "/talk", "/loginservlet", "/chatSocket/*").permitAll()
                 .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .defaultSuccessUrl("/welcome")
                 .failureUrl("/login?error")
                 .permitAll()
                 .and()

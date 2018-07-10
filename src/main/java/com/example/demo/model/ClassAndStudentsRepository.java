@@ -22,8 +22,15 @@ public interface ClassAndStudentsRepository extends JpaRepository<ClassAndStuten
     @Query(value="DELETE FROM class_and_stutents where class_and_stutents.stutents_id=?1 ",nativeQuery = true)
     public void deleteByStutentsId(String studentId);
 
+<<<<<<< HEAD
    /* @Transactional
     @Query(value = "SELECT class_and_stutents.class_id,sys_user.username from sys_user INNER JOIN class_and_stutents " +
             " on class_and_stutents.stutents_id=sys_user.id ",nativeQuery = true)
     public List<Object[]> findAllClassAndStutents();*/
+=======
+    @Transactional
+    @Query(value = "SELECT class_and_stutents.class_id,sys_user.username from sys_user INNER JOIN class_and_stutents " +
+            " on class_and_stutents.stutents_id=sys_user.id ",nativeQuery = true)
+    public List<Object[]> findAllClassAndStutents();
+>>>>>>> 8474578df8bce3bcdcc724860ac56c1876a0f729
 }
