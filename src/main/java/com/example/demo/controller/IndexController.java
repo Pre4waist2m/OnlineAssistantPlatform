@@ -163,12 +163,12 @@ public class IndexController {
     }
 
 
-    @GetMapping("/resource")
+  /*  @GetMapping("/resource")
     public String getResource(Model model) {
         List<ResourceList> lists = resourceListRepository.findAll();
         model.addAttribute("resourceList", lists);
         return "/resource";
-    }
+    }*/
 
   /*  @GetMapping("/uploadify")
     public void uploadify(HttpServletRequest request,
