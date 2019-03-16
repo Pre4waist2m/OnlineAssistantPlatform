@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
+/***
  * Created by hello on 2018/7/8.
  */
 public interface ApplyCourseRepository extends JpaRepository<applyCourse,Integer> {
