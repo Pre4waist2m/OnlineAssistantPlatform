@@ -1,4 +1,3 @@
-*.iml
 *.md
 src/main/java/com/example/demo/model/ApplyCourseRepository.java
 *.xml
