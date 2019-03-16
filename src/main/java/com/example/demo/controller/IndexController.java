@@ -110,6 +110,7 @@ public class IndexController {
             question.setQuestionkeyword((String) objects[1]);
             question.setOwn((String) objects[2]);
             System.out.println(question.toString());
+            System.out.println("hi,machao");
             questionsList.add(question);
         }
         modelAndView.addObject("courseId", courseId);
@@ -163,12 +164,12 @@ public class IndexController {
     }
 
 
-  /*  @GetMapping("/resource")
+    @GetMapping("/resource")
     public String getResource(Model model) {
         List<ResourceList> lists = resourceListRepository.findAll();
         model.addAttribute("resourceList", lists);
         return "/resource";
-    }*/
+    }
 
   /*  @GetMapping("/uploadify")
     public void uploadify(HttpServletRequest request,
