@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="fragments/header :: resources"></div>
+    <link rel="stylesheet" th:href="@{css/bootstrap/bootstrap4/bootstrap.min.css}">
+    <script type="text/javascript" th:src="@{js/jquery-3.3.1.min.js}"></script>
+</head>
+<body>
+<div class="loca_1">
+    <div class="loca_2">
+        <div th:replace="fragments/header :: header"></div>
+    </div>
+    <div class="loca_3">
+        <div class="loca_3_1 All_height">
+            <div th:replace="fragments/silder :: silder"></div>
+        </div>
+        <div class="loca_3_2 chatArea">
+            <div class="All_height chat">
+                <div class="title" id="title_show"></div>
+                <div class="information" id="msg">
+
+                </div>
+                <div class="write">
+                    <textarea id="textWord" style="height: 100px;" class=" text form-control"
+                              placeholder="按Ctrl和Enter键发送"></textarea>
+                    <button class="btn btn-info" id="send">发送</button>
+                </div>
+            </div>
+            <div class="All_height Key_list scro">
+                <div class="page-header">
+                    <h3>
+                        <div class="text-info"><small>问题描述：</small></div>
+                        <small>关键字：</small><small th:text="${question.getQuestionkeyword()}"></small>
+                    </h3>
+                </div>
+                <p>问题:</p>
+                <p th:text="${question.getQuestion()}" class="text-center lead">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    var courseId=[[${courseId}]];
+    var name = $("#title").text();
+    var target="ws://localhost:8080/talk/" + name;
+    var ws=new WebSocket(target);
+
+    console.log(name);
+    console.log("问题关键字:" + [[${question.getQuestionkeyword()}]]);
+
+    $("#title_show").text([[${question.getQuestionkeyword()}]]);
+    var discuss_question = [[${question.getQuestionid()}]];
+    console.log("讨论的问题是:" + discuss_question);
+
+    $([[${jsonArray}]]).each(function () {
+        add_message(this.own, name == this.own ? "news_my" : "news_others", this.message, this.time);
+    });
+
+    $("#send").click(function (e) {
+        e.preventDefault();
+        var content = $("#textWord").val();
+        $("#textWord").val("");
+        var time = gettime();
+        var object = {
+            courseId:courseId,
+            own: name,
+            msg: content,
+            time: time,
+            question_id: discuss_question
+        };
+        var str = JSON.stringify(object);
+        ws.send(str);
+        add_message(name, "news_my", content, time);
+        saveMessage(name, "news_my", content, time);
+    });
+
+    $(document).keydown(function (event) {
+        if (event.ctrlKey && event.which == 13) {
+            /* e.preventDefault();*/
+            var content = $("#textWord").val();
+            $("#textWord").val("");
+            var time = gettime();
+            var object = {
+                courseId:courseId,
+                own: name,
+                msg: content,
+                time: time,
+                question_id: discuss_question
+            };
+            var str = JSON.stringify(object);
+            ws.send(str);
+            add_message(name, "news_my", content, time);
+            saveMessage(name, "news_my", content, time);
+        }
+    });
+
+    function add_message(nam, csss, conten, tim) {
+        $("#msg").append("" +
+            "<div class='messageMain'>" + "<div class='nameLL'>" + nam + " : </div>" +
+            "<div class='messageContent'>" +
+            "<font class='login_information1 ' size='1'>" + tim + "</font><br>" +
+            "<li class='" + csss + "'>" + conten + "</li><br>" +
+            "</div>" +
+            "</div>");
+        $("#msg").scrollTop($("#msg")[0].scrollHeight);
+    }
+
+    ws.onmessage = function (event) {
+        eval("var msg=" + event.data + ";");
+        if(msg.question_id==discuss_question) {
+            add_message(msg.own, "news_others", msg.msg, msg.time);
+        }
+    };
+
+
+    function saveMessage(nam, csss, conten, tim) {
+        $.ajax({
+            url: "/saveMessage",
+            type: "POST",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "own": nam,
+                "question_id": discuss_question,
+                "message": conten,
+                "time": tim
+            },
+            success: function (e) {
+                console.log(e)
+            }
+        });
+    }
+
+    function gettime() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;//js中是从0开始所以要加1
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        var presentTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+        return presentTime;
+    }
+
+    $(".question").click(function () {
+        console.log($(this).text());
+        $("#title_show").text($(this).text());
+        discuss_question = $(this).attr("id");
+        document.getElementById("msg").innerHTML = "";
+        $.ajax({
+            url: "/allMessageNew",
+            type: "POST",
+            cache: "false",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType: 'application/x-www-form-urlencoded;',
+            dataType: "text",
+            data: {
+                "question_id": discuss_question,
+                "courseId":courseId
+            },
+            success: function (e) {
+               document.close();
+               document.write(e);
+                /* $(e).each(function () {
+                    add_message(this.own, name == this.own ? "news_my" : "news_others", this.message, this.time);
+                })*/
+            }
+        })
+    });
+
+</script>
+</body>
+</html>
