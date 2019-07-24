@@ -52,6 +52,7 @@ public class IndexController {
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // System.out.println("11");
+
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + request.getServerPort() + path + "/";
         Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
