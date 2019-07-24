@@ -71,7 +71,8 @@ public class SearchController {
 
     //注册提交的信息
     @RequestMapping("/register")
-    public String Signupfunction(@RequestBody User user) throws MessagingException {
+    public String Signupfunc
+    tion(@RequestBody User user) throws MessagingException {
         System.out.println("进入注册");
         //  System.out.println("title:"+user.getTitle()+"username: "+user.getUsername()+"password: "+user.getPassword()+"email:"+user.getEmail());
 
